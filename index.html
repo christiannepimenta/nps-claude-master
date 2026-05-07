@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPS CLAUDE MASTER - THOTSIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at 30% 20%, #0d0f1a 0%, #080a12 40%, #050608 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ═══ NEBULAS ═══ */
+.nebula { position:absolute;border-radius:50%;filter:blur(80px); }
+.nebula-drift { animation: nebulaPulse 8s ease-in-out infinite alternate, nebulaDrift 30s linear infinite; }
+@keyframes nebulaPulse { 0%{opacity:0.08;transform:scale(1)}100%{opacity:0.22;transform:scale(1.15)} }
+@keyframes nebulaDrift { 0%{transform:translate(0,0)rotate(0)}25%{transform:translate(30px,-20px)rotate(5deg)}50%{transform:translate(-20px,30px)rotate(-3deg)}75%{transform:translate(25px,15px)rotate(4deg)}100%{transform:translate(0,0)rotate(0)} }
+
+/* ═══ STARS ═══ */
+.star { position: absolute; border-radius: 50%; background: #fff; }
+.star-twinkle { animation: twinkle ease-in-out infinite alternate; }
+.star-pulse { animation: starPulse ease-in-out infinite; }
+.star-drift { animation: starDrift linear infinite; }
+@keyframes twinkle { 0%{opacity:0.1;transform:scale(0.6)}100%{opacity:1;transform:scale(1.4)} }
+@keyframes starPulse { 0%,100%{opacity:0.2;filter:blur(0px)}50%{opacity:0.9;filter:blur(1px)} }
+@keyframes starDrift { 0%{transform:translate(0,0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,3px)}75%{transform:translate(4px,1px)}100%{transform:translate(0,0)} }
+
+/* ═══ COMETS ═══ */
+.comet {
+  position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;
+  box-shadow:0 0 8px 3px rgba(255,255,255,0.7),-25px 5px 18px rgba(195,165,110,0.5),-50px 10px 25px rgba(195,165,110,0.3),-100px 20px 40px rgba(195,165,110,0.15),-150px 30px 50px rgba(195,165,110,0.05);
+}
+@keyframes cometFly1 { 0%{transform:translate(110vw,-10vh)rotate(-35deg);opacity:0}5%{opacity:1}90%{opacity:1}100%{transform:translate(-30vw,110vh)rotate(-35deg);opacity:0} }
+@keyframes cometFly2 { 0%{transform:translate(110vw,30vh)rotate(-25deg);opacity:0}5%{opacity:1}90%{opacity:0.8}100%{transform:translate(-40vw,90vh)rotate(-25deg);opacity:0} }
+@keyframes cometFly3 { 0%{transform:translate(-10vw,-10vh)rotate(30deg);opacity:0}5%{opacity:1}90%{opacity:0.8}100%{transform:translate(110vw,80vh)rotate(30deg);opacity:0} }
+
+/* ═══ SHOOTING STARS ═══ */
+.shooting-star {
+  position:absolute;width:2px;height:2px;background:#C3A56E;border-radius:50%;
+  box-shadow:-20px 4px 12px rgba(195,165,110,0.6),-40px 8px 20px rgba(195,165,110,0.3),-60px 12px 25px rgba(195,165,110,0.1);
+}
+
+/* ═══ GOLD PARTICLES ═══ */
+.gold-particle { position:absolute;border-radius:50%;animation:floatUp linear infinite; }
+@keyframes floatUp { 0%{opacity:0;transform:translateY(0)translateX(0)scale(0.3)}10%{opacity:0.6}50%{transform:translateY(-50vh)translateX(20px)scale(0.8)}90%{opacity:0.2}100%{opacity:0;transform:translateY(-105vh)translateX(-10px)scale(1)} }
+
+/* ═══ DUST RING ═══ */
+.dust-ring {
+  position:absolute;border:1px solid rgba(195,165,110,0.04);border-radius:50%;
+  top:50%;left:50%;transform:translate(-50%,-50%);animation:ringRotate 60s linear infinite;
+}
+@keyframes ringRotate { 0%{transform:translate(-50%,-50%)rotate(0)}100%{transform:translate(-50%,-50%)rotate(360deg)} }
+.dust-ring::after { content:'';position:absolute;width:6px;height:6px;background:rgba(195,165,110,0.3);border-radius:50%;top:0;left:50%;transform:translateX(-50%);box-shadow:0 0 10px rgba(195,165,110,0.4); }
+
+/* ═══ CONTAINER ═══ */
+.container {
+  max-width: 700px;
+  width: 90%;
+  background: rgba(13, 15, 26, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(195, 165, 110, 0.1);
+  border-radius: 12px;
+  padding: 3rem;
+  position: relative;
+  z-index: 10;
+  animation: slideUp 0.8s ease-out;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo-thotsis {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #C3A56E;
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  animation: fadeIn 0.8s ease-out 0.1s both;
+  text-transform: uppercase;
+}
+
+.main-title {
+  font-family: 'Fraunces', serif;
+  font-size: 42px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #C3A56E 0%, #D4A853 40%, #C86E32 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  animation: fadeIn 0.8s ease-out 0.2s both;
+  letter-spacing: -1px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: #6a6560;
+  font-weight: 400;
+  animation: fadeIn 0.8s ease-out 0.3s both;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.config-section {
+  background: rgba(195, 165, 110, 0.05);
+  border-left: 3px solid #C3A56E;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 6px;
+  animation: slideIn 0.8s ease-out 0.4s both;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.config-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #C3A56E;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.config-field {
+  margin-bottom: 1rem;
+}
+
+.config-field label {
+  display: block;
+  font-size: 11px;
+  color: #a0b8d0;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.config-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(195, 165, 110, 0.2);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.config-field input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.config-field input:focus {
+  outline: none;
+  border-color: #C3A56E;
+  box-shadow: 0 0 0 3px rgba(195, 165, 110, 0.2);
+}
+
+.config-field small {
+  display: block;
+  font-size: 10px;
+  color: #6a6560;
+  margin-top: 0.4rem;
+}
+
+.config-btn {
+  background: linear-gradient(135deg, #C3A56E 0%, #D4A853 40%, #C86E32 100%);
+  color: #080a12;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.config-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(195, 165, 110, 0.3);
+}
+
+.config-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.status {
+  font-size: 11px;
+  margin-top: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a0b8d0;
+}
+
+.status.connected {
+  color: #7fb069;
+  font-weight: 600;
+}
+
+.status.error {
+  color: #e07040;
+  font-weight: 600;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(195, 165, 110, 0.3), transparent);
+  margin: 2rem 0;
+}
+
+.nps-section {
+  margin-bottom: 2.5rem;
+  animation: fadeIn 0.8s ease-out 0.5s both;
+}
+
+.nps-label {
+  display: block;
+  font-size: 13px;
+  color: #e0d0c0;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+}
+
+.scale-container {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.scale-btn {
+  aspect-ratio: 1;
+  border: 1.5px solid rgba(195, 165, 110, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0d0c0;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+}
+
+.scale-btn:hover {
+  background: rgba(195, 165, 110, 0.1);
+  transform: scale(1.05);
+  border-color: rgba(195, 165, 110, 0.6);
+}
+
+.scale-btn.selected {
+  background: linear-gradient(135deg, #C3A56E 0%, #D4A853 40%, #C86E32 100%);
+  color: #080a12;
+  border-color: #C3A56E;
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(195, 165, 110, 0.4);
+}
+
+.scale-labels {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 8px;
+  font-size: 9px;
+  color: #6a6560;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.scale-labels span:first-child {
+  text-align: left;
+}
+
+.scale-labels span:last-child {
+  text-align: right;
+}
+
+.feedback-section {
+  margin-top: 2rem;
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+.feedback-label {
+  font-size: 11px;
+  color: #C3A56E;
+  margin-bottom: 0.75rem;
+  display: block;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid rgba(195, 165, 110, 0.2);
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  resize: vertical;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.05);
+  color: #e0d0c0;
+}
+
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #C3A56E;
+  box-shadow: 0 0 0 3px rgba(195, 165, 110, 0.2);
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 8px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  color: #a0b8d0;
+}
+
+.radio-group label:hover {
+  background: rgba(195, 165, 110, 0.1);
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: #C3A56E;
+  width: 16px;
+  height: 16px;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #C3A56E 0%, #D4A853 40%, #C86E32 100%);
+  color: #080a12;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 2rem;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.8s ease-out 0.7s both;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(195, 165, 110, 0.4);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success {
+  color: #7fb069;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 11px;
+  display: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: popIn 0.4s ease-out;
+}
+
+.error {
+  color: #e07040;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 11px;
+  display: none;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: popIn 0.4s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.disabled-form {
+  opacity: 0.5;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- Nebulas -->
+<div class="nebula nebula-drift" style="width:600px;height:600px;background:radial-gradient(circle,rgba(195,165,110,0.25),transparent);top:5%;left:55%;"></div>
+<div class="nebula nebula-drift" style="width:450px;height:450px;background:radial-gradient(circle,rgba(200,110,50,0.2),transparent);top:55%;left:10%;animation-delay:4s;"></div>
+<div class="nebula nebula-drift" style="width:350px;height:350px;background:radial-gradient(circle,rgba(100,140,200,0.15),transparent);top:25%;left:25%;animation-delay:2s;"></div>
+<div class="nebula nebula-drift" style="width:250px;height:250px;background:radial-gradient(circle,rgba(180,100,160,0.1),transparent);top:70%;left:70%;animation-delay:6s;"></div>
+
+<!-- Dust rings -->
+<div class="dust-ring" style="width:90vw;height:90vw;max-width:800px;max-height:800px;"></div>
+<div class="dust-ring" style="width:70vw;height:70vw;max-width:600px;max-height:600px;border-color:rgba(200,110,50,0.03);animation-duration:45s;animation-direction:reverse;"></div>
+
+<!-- Planets -->
+<div style="position:absolute;top:12%;left:78%;animation:orbitSlow 14s ease-in-out infinite;"><div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 25% 25%,#f0d080,#D4A853,#8B6914);box-shadow:0 0 20px rgba(212,168,83,0.4);animation:planetGlow 4s ease-in-out infinite;"></div></div>
+<div style="position:absolute;top:68%;left:10%;animation:orbitWide 22s ease-in-out infinite;animation-delay:2s;"><div style="width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#e88a50,#C86E32,#7A3E16);box-shadow:0 0 25px rgba(200,110,50,0.4);animation:planetGlow 5s ease-in-out infinite alternate;"></div></div>
+<div style="position:absolute;top:22%;left:18%;animation:orbitSlow 18s ease-in-out infinite;animation-delay:5s;"><div style="width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#c0d8f0,#a0b8d0,#5a7a9a);box-shadow:0 0 12px rgba(160,184,208,0.4);animation:planetGlow 3s ease-in-out infinite;"></div></div>
+
+<style>
+@keyframes orbitSlow { 0%{transform:translate(0,0)rotate(0)}25%{transform:translate(25px,-18px)rotate(3deg)}50%{transform:translate(-10px,-25px)rotate(-2deg)}75%{transform:translate(-20px,15px)rotate(4deg)}100%{transform:translate(0,0)rotate(0)} }
+@keyframes orbitWide { 0%{transform:translate(0,0)}20%{transform:translate(40px,-30px)}40%{transform:translate(10px,-50px)}60%{transform:translate(-35px,-20px)}80%{transform:translate(-15px,25px)}100%{transform:translate(0,0)} }
+@keyframes planetGlow { 0%,100%{box-shadow:0 0 15px rgba(195,165,110,0.2)}50%{box-shadow:0 0 30px rgba(195,165,110,0.5)} }
+</style>
+
+<div class="container">
+  <div class="header">
+    <div class="logo-thotsis">THOTSIS</div>
+    <div class="main-title">NPS CLAUDE MASTER</div>
+    <div class="subtitle">Pesquisa de Satisfação</div>
+  </div>
+
+
+
+  <form id="npsForm">
+    <div class="nps-section">
+      <label class="nps-label">QUAL É A PROBABILIDADE DE VOCÊ RECOMENDAR ESTE TREINAMENTO A UM COLEGA?</label>
+      <div class="scale-container">
+        <button type="button" class="scale-btn" data-score="0">0</button>
+        <button type="button" class="scale-btn" data-score="1">1</button>
+        <button type="button" class="scale-btn" data-score="2">2</button>
+        <button type="button" class="scale-btn" data-score="3">3</button>
+        <button type="button" class="scale-btn" data-score="4">4</button>
+        <button type="button" class="scale-btn" data-score="5">5</button>
+        <button type="button" class="scale-btn" data-score="6">6</button>
+        <button type="button" class="scale-btn" data-score="7">7</button>
+        <button type="button" class="scale-btn" data-score="8">8</button>
+        <button type="button" class="scale-btn" data-score="9">9</button>
+        <button type="button" class="scale-btn" data-score="10">10</button>
+      </div>
+      <div class="scale-labels">
+        <span>Improvável</span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span>Muito Provável</span>
+      </div>
+    </div>
+
+    <div class="feedback-section">
+      <label class="feedback-label">O QUE PODERIA MELHORAR NESTE TREINAMENTO?</label>
+      <textarea id="feedback" placeholder="Sua resposta aqui..."></textarea>
+    </div>
+
+    <div class="feedback-section">
+      <label class="feedback-label">QUAL FOI O PONTO FORTE DO TREINAMENTO?</label>
+      <textarea id="strength" placeholder="Sua resposta aqui..."></textarea>
+    </div>
+
+    <div class="feedback-section">
+      <label class="feedback-label">QUAL ERA SEU NÍVEL DE CONHECIMENTO SOBRE CLAUDE ANTES DO TREINAMENTO?</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="prior-knowledge" value="Nenhum"> NENHUM
+        </label>
+        <label>
+          <input type="radio" name="prior-knowledge" value="Básico"> BÁSICO
+        </label>
+        <label>
+          <input type="radio" name="prior-knowledge" value="Intermediário"> INTERMEDIÁRIO
+        </label>
+        <label>
+          <input type="radio" name="prior-knowledge" value="Avançado"> AVANÇADO
+        </label>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">ENVIAR RESPOSTA</button>
+    <div class="success" id="successMsg">✓ OBRIGADO! RESPOSTA REGISTRADA</div>
+    <div class="error" id="errorMsg"></div>
+  </form>
+</div>
+
+<script>
+let selectedScore = null;
+let connected = true;
+let sheetId = 'COLE_SEU_ID_AQUI'; // Cole o ID da planilha entre as aspas
+
+// ═══ MAIN STARS ═══
+const anims=['star-twinkle','star-pulse','star-drift'];
+const starColors=['#fff','#fff','#fff','#C3A56E','#a0c0e0','#D4A853','#e0d0c0'];
+for(let i=0;i<300;i++){
+  const s=document.createElement('div');
+  s.className='star '+anims[Math.floor(Math.random()*anims.length)];
+  const sz=0.4+Math.random()*3;
+  s.style.width=sz+'px';
+  s.style.height=sz+'px';
+  s.style.left=Math.random()*100+'%';
+  s.style.top=Math.random()*100+'%';
+  s.style.animationDuration=(1+Math.random()*5)+'s';
+  s.style.animationDelay=Math.random()*4+'s';
+  s.style.background=starColors[Math.floor(Math.random()*starColors.length)];
+  document.body.appendChild(s);
+}
+
+// ═══ COMETS ═══
+const cometAnims=['cometFly1','cometFly2','cometFly3'];
+function spawnComet(){
+  const c=document.createElement('div');
+  c.className='comet';
+  const anim=cometAnims[Math.floor(Math.random()*cometAnims.length)];
+  const dur=3+Math.random()*5;
+  c.style.animation=anim+' '+dur+'s linear';
+  c.style.top=Math.random()*40+'%';
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),dur*1000);
+}
+setInterval(spawnComet,3500);
+
+// ═══ SHOOTING STARS ═══
+function spawnShoot(){
+  const s=document.createElement('div');
+  s.className='shooting-star';
+  s.style.top=Math.random()*50+'%';
+  s.style.left=(10+Math.random()*70)+'%';
+  const angle=-20-Math.random()*30;
+  const dist=200+Math.random()*300;
+  const dur=0.6+Math.random()*1.5;
+  const dx=-Math.cos(angle*Math.PI/180)*dist;
+  const dy=Math.sin(angle*Math.PI/180)*dist;
+  s.animate([
+    {transform:'translate(0,0)',opacity:0},
+    {opacity:1,offset:0.05},
+    {opacity:0,offset:0.4},
+    {transform:`translate(${dx}px,${dy}px)`,opacity:0}
+  ],{duration:dur*1000,easing:'linear'});
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),dur*1000);
+}
+setInterval(()=>{if(Math.random()>0.3)spawnShoot();},2000);
+
+// ═══ GOLD PARTICLES ═══
+const pc=['#C3A56E','#C86E32','#D4A853','#EDE8DE','#f0d080'];
+for(let i=0;i<50;i++){
+  const p=document.createElement('div');
+  p.className='gold-particle';
+  const sz=1+Math.random()*5;
+  p.style.width=sz+'px';
+  p.style.height=sz+'px';
+  p.style.left=Math.random()*100+'%';
+  p.style.bottom='-10px';
+  p.style.background=pc[Math.floor(Math.random()*pc.length)];
+  if(sz>3)p.style.filter='blur(1px)';
+  p.style.animationDuration=(6+Math.random()*14)+'s';
+  p.style.animationDelay=Math.random()*10+'s';
+  document.body.appendChild(p);
+}
+
+// ═══ FORMULÁRIO ═══
+document.querySelectorAll('.scale-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedScore = parseInt(btn.dataset.score);
+  });
+});
+
+document.getElementById('npsForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  if (selectedScore === null) {
+    alert('POR FAVOR, SELECIONE UM SCORE DE 0 A 10');
+    return;
+  }
+
+  const score = selectedScore;
+  const feedback = document.getElementById('feedback').value || '';
+  const strength = document.getElementById('strength').value || '';
+  const priorKnowledge = document.querySelector('input[name="prior-knowledge"]:checked')?.value || '';
+  const timestamp = new Date().toLocaleString('pt-BR');
+
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'ENVIANDO...';
+
+  try {
+    const escapedFeedback = feedback.replace(/'/g, "\\'").replace(/\n/g, ' ');
+    const escapedStrength = strength.replace(/'/g, "\\'").replace(/\n/g, ' ');
+    
+    const query = encodeURIComponent(`INSERT INTO 'Sheet1' (score, feedback, strength, prior_knowledge, timestamp) VALUES (${score}, '${escapedFeedback}', '${escapedStrength}', '${priorKnowledge}', '${timestamp}')`);
+    
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/query?tq=${query}`;
+    
+    const response = await fetch(url);
+
+    if (response.ok || response.status === 200) {
+      document.getElementById('feedback').value = '';
+      document.getElementById('strength').value = '';
+      document.querySelector('input[name="prior-knowledge"]').checked = false;
+      document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+      selectedScore = null;
+
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+      
+      setTimeout(() => {
+        document.getElementById('successMsg').style.display = 'none';
+      }, 3000);
+    } else {
+      throw new Error('Erro ao enviar');
+    }
+  } catch (err) {
+    document.getElementById('errorMsg').textContent = '✗ ERRO AO ENVIAR. TENTE NOVAMENTE.';
+    document.getElementById('errorMsg').style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ENVIAR RESPOSTA';
+  }
+});
+</script>
+</body>
+</html>
