@@ -10,12 +10,13 @@
 
 body {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: radial-gradient(ellipse at 30% 20%, #0d0f1a 0%, #080a12 40%, #050608 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
   font-family: 'Inter', sans-serif;
 }
@@ -75,6 +76,7 @@ body {
   z-index: 10;
   animation: slideUp 0.8s ease-out;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  margin: 2rem auto;
 }
 
 @keyframes slideUp {
@@ -570,7 +572,7 @@ textarea:focus {
 <script>
 let selectedScore = null;
 let connected = true;
-let sheetId = '16GKhnU2I7AO5YY79H9WA37Kvt_omS4RwWuQROZgzp-U'; // Cole o ID da planilha entre as aspas
+let sheetId = '16GKhnU2I7AO5YY79H9WA37Kvt_omS4RwWuQROZgzp-U'; // ID da planilha NPS Claude Master
 
 // ═══ MAIN STARS ═══
 const anims=['star-twinkle','star-pulse','star-drift'];
