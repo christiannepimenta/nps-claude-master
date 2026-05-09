@@ -666,23 +666,28 @@ document.getElementById('npsForm').addEventListener('submit', async (e) => {
   const feedback = document.getElementById('feedback').value || '';
   const strength = document.getElementById('strength').value || '';
   const priorKnowledge = document.querySelector('input[name="prior-knowledge"]:checked')?.value || '';
-  const timestamp = new Date().toLocaleString('pt-BR');
 
   const submitBtn = document.getElementById('submitBtn');
   submitBtn.disabled = true;
   submitBtn.textContent = 'ENVIANDO...';
 
   try {
-    const escapedFeedback = feedback.replace(/'/g, "\\'").replace(/\n/g, ' ');
-    const escapedStrength = strength.replace(/'/g, "\\'").replace(/\n/g, ' ');
+    const appScriptUrl = 'https://script.google.com/macros/d/AKfycbx1wdQO_bnAR6VJlYxDzVS0G6Gw8r4w3NfzSQZQH1SIrgWpFKqIy9gUDGT4tVCEKFRjRg/usercontent';
     
-    const query = encodeURIComponent(`INSERT INTO 'Sheet1' (score, feedback, strength, prior_knowledge, timestamp) VALUES (${score}, '${escapedFeedback}', '${escapedStrength}', '${priorKnowledge}', '${timestamp}')`);
-    
-    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/query?tq=${query}`;
-    
-    const response = await fetch(url);
+    const formData = new URLSearchParams();
+    formData.append('score', score);
+    formData.append('feedback', feedback);
+    formData.append('strength', strength);
+    formData.append('prior_knowledge', priorKnowledge);
 
-    if (response.ok || response.status === 200) {
+    const response = await fetch(appScriptUrl, {
+      method: 'POST',
+      body: formData
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
       document.getElementById('feedback').value = '';
       document.getElementById('strength').value = '';
       document.querySelector('input[name="prior-knowledge"]').checked = false;
@@ -696,7 +701,7 @@ document.getElementById('npsForm').addEventListener('submit', async (e) => {
         document.getElementById('successMsg').style.display = 'none';
       }, 3000);
     } else {
-      throw new Error('Erro ao enviar');
+      throw new Error(result.error || 'Erro ao enviar');
     }
   } catch (err) {
     document.getElementById('errorMsg').textContent = '✗ ERRO AO ENVIAR. TENTE NOVAMENTE.';
